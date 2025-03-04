@@ -1,0 +1,25 @@
+{
+"products": [
+    {
+        "name": "Product 1",
+        "photo": "https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg",
+        "description": "Product 1: Amazing gadget with many features.",
+        "quantity": 10,
+        "category": "tub_am_01"
+    },
+    {
+        "name": "Product 2",
+        "photo": "https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg",
+        "description": "Product 2: Innovative tool for daily tasks.",
+        "quantity": 5,
+        "category": "tub_am_01"
+    },
+    {
+        "name": "Product 3",
+        "photo": "https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg",
+        "description": "Product 3: High-quality item for professionals.",
+        "quantity": 8,
+        "category": "tub_am_01"
+    }
+]
+}

@@ -1,0 +1,32 @@
+app:
+  name: CRM System
+  debug: true
+
+database:
+  engine: postgresql
+  host: localhost
+  port: 5432
+  name: crm_db
+  user: db_user
+  # password: db_password  # Пароль лучше через переменные окружения
+
+telegram_bot:
+  token_env_var: TELEGRAM_BOT_TOKEN # Имя переменной окружения, где хранится токен пользователя
+
+admin_telegram_bot:
+  token_env_var: ADMIN_TELEGRAM_BOT_TOKEN # Имя переменной окружения, где хранится токен администратора
+
+logging:
+  level: DEBUG
+  format: '%(asctime)s - %(levelname)s - %(message)s'
+
+storage:
+  local: #types of storadges: local | database
+    path: /storage  # Путь к папке хранения файлов
+  database:
+    engine: postgresql
+    host: localhost
+    port: 5432
+    name: teletrix_db
+    user: super_user
+    password: storage_password  # Пароль лучше через переменные окружения
