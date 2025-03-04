@@ -1,13 +1,17 @@
 import asyncio
-import os
 import logging as log
+import os
+import sqlite3
 
 from aiogram import Bot, Dispatcher
 from aiogram import types as aiogram_types
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.utils.markdown import bold
+from dotenv import load_dotenv
 
+from core.config.config import get_config as get_config
+from core.infrastructure.config_reader import get_config as get_yaml_config
 from modules.catalog.application.services.product_service import ProductService
 from modules.catalog.domain.services.product_management_service import \
     ProductManagementService
@@ -17,11 +21,6 @@ from modules.catalog.infrastructure.database.product_repository_impl import \
     ProductRepositoryImpl
 from modules.catalog.infrastructure.telegram_bot.handlers import \
     CatalogBotHandler
-
-import sqlite3
-from core.config.config import get_config as get_config
-from core.infrastructure.config_reader import get_config as get_yaml_config
-from dotenv import load_dotenv
 
 log.basicConfig(
     level=log.INFO,
@@ -48,11 +47,6 @@ async def setup():
     config = get_config()
     log.info(f"TELEGRAM_BOT_TOKEN: {config.telegram_bot.token}")
 
-    # db_config = config['database']
-    # DATABASE_URL = f"{db_config['engine']}://{db_config['user']}:{os.environ.get('DB_PASSWORD', '')}@{db_config['host']}:{db_config['port']}/{db_config['name']}"
-    # logging.info(f"Database URL: {DATABASE_URL}")
-    
-
     await set_bot_commands()
     await dp.start_polling(bot, skip_updates=True)
 
@@ -70,7 +64,10 @@ async def command_start_handler(message: aiogram_types.Message) -> None:
     """
     This handler receives messages with `/start` command
     """
-    await message.answer(f"Hello, {bold(message.from_user.full_name)}!")
+    chat_id = message.chat.id
+    await message.answer(f"Chat ID: {chat_id}")
+    await message.answer(f"User ID: {bold(message.from_user.id)}")
+    await message.answer(f"User name: {bold(message.from_user.full_name)}")
 
 
 if __name__ == '__main__':

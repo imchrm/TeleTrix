@@ -1,5 +1,5 @@
 app:
-  name: CRM System
+  name: TeleTrix CRM System
   debug: true
 
 database:
@@ -20,9 +20,13 @@ logging:
   level: DEBUG
   format: '%(asctime)s - %(levelname)s - %(message)s'
 
+#types of storadges: file | database
 storage:
-  local: #types of storadges: local | database
-    path: /storage  # Путь к папке хранения файлов
+  file: 
+    path: storage/  # Путь к папке хранения файлов
+    categories: categories.json
+    products: products.json
+    users: users.json
   database:
     engine: postgresql
     host: localhost
