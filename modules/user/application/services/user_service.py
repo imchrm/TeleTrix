@@ -18,6 +18,16 @@ class UserService:
         self.user_repository.save(user)
         return user
 
+    def start_registration(user_id):
+        """Начало регистрации."""
+        # Логика начала регистрации...
+        pass
+
+    def complete_registration(data, user_id):
+        """Завершение регистрации."""
+        # Логика завершения регистрации...
+        pass
+
     def get_user_by_id(self, user_id: int):
         """Получение пользователя по ID."""
         return self.user_repository.get_by_id(user_id)

@@ -1,10 +1,32 @@
-from aiogram import types, Dispatcher
-from aiogram.dispatcher import FSMContext
-from aiogram.filters import Command
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
+from aiogram.utils.markdown import bold
 
-from .forms import RegistrationDialog
 from ...application.services.user_service import RegistrationService
+from .forms import RegistrationDialog
+
+
+class StartHandler:
+    def __init__(self, bot: Bot):
+        self.bot = bot
+    
+    async def start(self, message: types.Message):
+        """
+        This handler receives messages with `/start` command
+        """
+        chat_id = message.chat.id
+        await message.answer(f"Bot ID: {self.bot.id}")
+        await message.answer(f"Chat ID: {chat_id}")
+        await message.answer(f"User ID: {bold(message.from_user.id)}")
+        await message.answer(f"User name: {bold(message.from_user.full_name)}")
+        await message.answer("")
+        await message.answer(f"Привет, {message.from_user.first_name}! Я помогу тебе зарегистрироваться.")
+        await RegistrationDialog.ask_name(message)
+
+    def register_hadlers(self, dp: Dispatcher):
+        dp.message.register(self.start, CommandStart())
+
 
 class RegistrationHandler:
     def __init__(self, registration_service: RegistrationService):
@@ -33,6 +55,6 @@ class RegistrationHandler:
 
     def register_handlers(self, dp: Dispatcher):
         """Регистрация обработчиков."""
-        dp.register_message_handler(self.start_registration, Command("register"), state="*") #Состояние "*" позволяет запускать команду из любого места.
-        dp.register_message_handler(self.process_name, state=RegistrationDialog.waiting_for_name)
-        dp.register_message_handler(self.process_phone, state=RegistrationDialog.waiting_for_phone)
+        dp.message.register(self.start_registration, Command("register"), state="*") #Состояние "*" позволяет запускать команду из любого места.
+        dp.message.register(self.process_name, state=RegistrationDialog.waiting_for_name)
+        dp.message.register(self.process_phone, state=RegistrationDialog.waiting_for_phone)
