@@ -3,7 +3,7 @@ from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.markdown import bold
 
-from ...application.services.user_service import RegistrationService
+from modules.user.application.services.user_service import UserService
 from .forms import RegistrationDialog
 
 
@@ -29,7 +29,7 @@ class StartHandler:
 
 
 class RegistrationHandler:
-    def __init__(self, registration_service: RegistrationService):
+    def __init__(self, registration_service: UserService):
         self.registration_service = registration_service
 
     async def start_registration(self, message: types.Message, state: FSMContext):

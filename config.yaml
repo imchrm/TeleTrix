@@ -21,12 +21,14 @@ logging:
   format: '%(asctime)s - %(levelname)s - %(message)s'
 
 #types of storadges: file | database
+storage_type: file
 storage:
   file: 
     path: storage/  # Путь к папке хранения файлов
-    categories: categories.json
-    products: products.json
-    users: users.json
+    data_file_type: yaml  # Тип файла для хранения данных: yaml | json
+    categories: categories
+    products: products
+    users: users
   database:
     engine: postgresql
     host: localhost

@@ -16,9 +16,14 @@ class ProductRepositoryImpl(ProductRepository):
 
     def find_by_category(self, category:CategoryDTO) -> list[Product]:
             products = []
-            for product in self.db.values():
-                if product.category == category:
-                    products.append(product)
+            # TODO: Make a test mode
+            if False:
+                for product in self.db.values():
+                    if product.category == category:
+                        products.append(product)
+                # return products
+            else:
+                products = self.get_fake_product_list()
             return products
 
     def get_fake_product_list() -> list[Product]:

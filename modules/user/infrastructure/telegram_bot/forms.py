@@ -1,6 +1,6 @@
 from aiogram.fsm.state import State, StatesGroup
 from aiogram import types
-from aiogram.dispatcher import FSMContext
+from aiogram.fsm.context import FSMContext
 
 class RegistrationDialog(StatesGroup):
     """Class for managing the state of the user registration dialog."""

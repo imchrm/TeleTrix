@@ -1,15 +1,12 @@
 import asyncio
 import logging as log
-import os
-import sqlite3
 
 from aiogram import Bot, Dispatcher
 from aiogram import types as aiogram_types
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.utils.markdown import bold
-from dotenv import load_dotenv
 
+from core.application.menu.config import MenuConfig
 from core.config.config import ConfigManager, get_config as get_config
 from core.infrastructure.config_reader import get_config as get_yaml_config
 from modules.catalog.application.services.product_service import ProductService
@@ -23,6 +20,7 @@ from modules.catalog.infrastructure.telegram_bot.handlers import \
     CatalogBotHandler
 from modules.user.infrastructure.telegram_bot.handlers import StartHandler
 
+# TODO: Add logging configuration from Config below
 log.basicConfig(
     level=log.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
@@ -39,14 +37,17 @@ async def setup():
 
     bot = Bot(token=config.telegram_bot.token)
     dp = Dispatcher()
-    dp.storage = MemoryStorage()
+    # dp.storage = MemoryStorage()
 
-    set_app_independences(bot, dp)
+    menu_config = MenuConfig()
+    commands = menu_config.start().get_commands()
+    await bot.set_my_commands(commands)
 
-    await set_bot_commands(bot)
+    set_customer_bot_dependences(bot, dp)
+
     await dp.start_polling(bot, skip_updates=True)
 
-def set_app_independences(bot:Bot, disp:Dispatcher) -> None:
+def set_customer_bot_dependences(bot:Bot, disp:Dispatcher) -> None:
  
     product_repository = ProductRepositoryImpl()
     category_repository = CategoryRepositoryImpl()
@@ -55,31 +56,12 @@ def set_app_independences(bot:Bot, disp:Dispatcher) -> None:
 
     product_service = ProductService(product_repository, product_management_service)
 
+
     start_hadler = StartHandler(bot)
     start_hadler.register_hadlers(disp)
 
     catalog_handler = CatalogBotHandler(product_service)
     catalog_handler.register_handlers(disp)
-
-async def set_bot_commands(bot:Bot) -> None:
-    commands = [
-        aiogram_types.BotCommand(command="start", description="Start the bot"),
-        aiogram_types.BotCommand(command="help", description="Show help information"),
-        aiogram_types.BotCommand(command="list", description="List information"),
-        aiogram_types.BotCommand(command="products", description="View available products")
-    ]
-    await bot.set_my_commands(commands)
-
-@dp.message(CommandStart())
-async def command_start_handler(message: aiogram_types.Message) -> None:
-    """
-    This handler receives messages with `/start` command
-    """
-    chat_id = message.chat.id
-    await message.answer(f"Bot ID: {bot.id}")
-    await message.answer(f"Chat ID: {chat_id}")
-    await message.answer(f"User ID: {bold(message.from_user.id)}")
-    await message.answer(f"User name: {bold(message.from_user.full_name)}")
 
 
 if __name__ == '__main__':
