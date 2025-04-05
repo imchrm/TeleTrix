@@ -4,16 +4,21 @@ from core.application.menu.menu_dto import MenuDTO
 
 
 class MenuStates:
-    UNAUTHORIZED = 'unauthorized'
-    AUTHORIZED = 'authorized'
+    # TODO: Add more states
+    UNAUTHORIZED = "UNAUTHORIZED"
+    AUTHORIZED = "AUTHORIZED"
+
+    pass
 
 class Commands():
+    START = 'start'
     AUTH = 'auth'
     HELP = 'help'
     REGISTER = 'register'
     PROFILE = 'profile'
     CATALOG = 'catalog'
     PRODUCT = 'product'
+    PRODUCTS = 'products'
     LOGOUT = 'logout'
 
 class MenuConfig():
@@ -26,8 +31,8 @@ class MenuConfig():
         if state == MenuStates.UNAUTHORIZED:
             return MenuDTO(
                 commands=[
-                aiogram_types.BotCommand(command=Commands.AUTH, description='Авторизация'),
-                aiogram_types.BotCommand(command=Commands.HELP, description='Помощь'),
+                aiogram_types.BotCommand(command=Commands.START, description='Старт'),
+                aiogram_types.BotCommand(command=Commands.PRODUCTS, description='Каталог'),
                 ]
             )
         elif state == MenuStates.AUTHORIZED:

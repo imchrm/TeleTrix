@@ -14,8 +14,8 @@ from modules.catalog.domain.services.product_management_service import \
     ProductManagementService
 from modules.catalog.infrastructure.database.category_repository_impl import \
     CategoryRepositoryImpl
-from modules.catalog.infrastructure.database.product_repository_impl import \
-    ProductRepositoryImpl
+from modules.catalog.infrastructure.database.product_fake_repository_impl import \
+    ProductFakeRepositoryImpl
 from modules.catalog.infrastructure.telegram_bot.handlers import \
     CatalogBotHandler
 from modules.user.infrastructure.telegram_bot.handlers import StartHandler
@@ -49,7 +49,7 @@ async def setup():
 
 def set_customer_bot_dependences(bot:Bot, disp:Dispatcher) -> None:
  
-    product_repository = ProductRepositoryImpl()
+    product_repository = ProductFakeRepositoryImpl()
     category_repository = CategoryRepositoryImpl()
 
     product_management_service = ProductManagementService(product_repository, category_repository)

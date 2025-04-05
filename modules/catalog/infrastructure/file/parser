@@ -1,0 +1,115 @@
+import logging as log
+from typing import Any, Dict, List
+from modules.catalog.domain.entities.product import Product
+from modules.catalog.domain.entities.category import Category
+from modules.catalog.infrastructure.file.structure import ProductStructure
+
+
+class ProductParser:
+    """
+    Parses product data from a list of dictionaries (typically loaded from YAML)
+    into a list of Product entities.
+    """
+
+    @staticmethod
+    def parse_products(product_data_list: List[Dict[str, Any]]) -> List[Product]:
+        """
+        Parses a list of dictionaries into a list of Product entities.
+
+        Args:
+            product_data_list: A list of dictionaries, where each dictionary
+                               represents a product.
+
+        Returns:
+            A list of Product entities.
+        """
+        products: List[Product] = []
+        for product_data in product_data_list:
+            try:
+                product = ProductParser._parse_product(product_data)
+                products.append(product)
+            except (KeyError, TypeError, ValueError) as e:
+                print(f"Error parsing product data: {product_data}. Error: {e}")
+                # Handle the error appropriately, e.g., log it, skip the product, etc.
+                # For now, we're just printing the error and skipping the product.
+        return products
+
+    @staticmethod
+    def _parse_product(product_data: Dict[str, Any]) -> Product:
+        """
+        Parses a single product dictionary into a Product entity.
+
+        Args:
+            product_data: A dictionary representing a product.
+
+        Returns:
+            A Product entity.
+
+        Raises:
+            KeyError: If a required key is missing in the product data.
+            TypeError: If a value has an incorrect type.
+            ValueError: If a value is invalid.
+        """
+        # Extract data from the dictionary, handling potential missing keys
+        product_id = product_data.get("id")
+        name = product_data.get("name")
+        description = product_data.get("description")
+        price = product_data.get("price")
+        photo = product_data.get("photo")
+        quantity = product_data.get("quantity", 0)  # Default to 0 if quantity is missing
+
+        # Category handling
+        category_data = product_data.get("category")
+        if category_data:
+            category = Category(
+                value=category_data.get("value"),
+                description=category_data.get("description")
+            )
+        else:
+            category = Category()
+
+        # Validate data types and values
+        if not isinstance(name, str) or not name:
+            raise ValueError("Product name must be a non-empty string.")
+        if description is not None and not isinstance(description, str):
+            raise TypeError("Product description must be a string or None.")
+        if price is not None and not isinstance(price, (int, float)):
+            raise TypeError("Product price must be a number or None.")
+        if photo is not None and not isinstance(photo, str):
+            raise TypeError("Product photo must be a string or None.")
+        if not isinstance(quantity, int):
+            raise TypeError("Product quantity must be an integer.")
+        if not isinstance(category, Category):
+            raise TypeError("Product category must be a Category object")
+
+        # Create and return the Product entity
+        return Product(
+            id=product_id,
+            name=name,
+            description=description,
+            price=price,
+            photo=photo,
+            quantity=quantity,
+            category=category,
+        )
+
+    @staticmethod
+    def load_and_parse_products(file_path: str) -> List[Product]:
+        """
+        Loads product data from a YAML file and parses it into a list of Product entities.
+
+        Args:
+            file_path: The path to the YAML file.
+
+        Returns:
+            A list of Product entities.
+        """
+        try:
+            product_data_list = ProductStructure.load_yaml(file_path)
+            return ProductParser.parse_products(product_data_list)
+        except FileNotFoundError as e:
+            log.error(f"Error: {e}")
+            return []
+        except Exception as e:
+            log.error(f"An unexpected error occurred: {e}")
+            return []

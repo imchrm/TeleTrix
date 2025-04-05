@@ -21,7 +21,7 @@ class ProductService:
         # Return of pool of all products like the list of ProductDTO
         return self.product_repository.get_all_products()
 
-    def get_products_by_category(self, category):
+    def get_products_by_category(self, category) -> list[Product]:
         self.product_management_service
         return self.product_repository.find_by_category(category)
 

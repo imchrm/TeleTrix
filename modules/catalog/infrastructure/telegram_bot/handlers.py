@@ -28,13 +28,18 @@ class CatalogBotHandler:
         category = message.text
         # Получение товаров из сервиса с учетом категории
         products = self.product_service.get_products_by_category(category) #Предполагается что в сервисе есть такой метод
+        
         if products:
-            formatted_products = "\n".join([f"{p['name']} - {p['price']}" for p in products])
-            await message.reply(f"Товары в категории {category}:\n{formatted_products}")
+            formatted_products = "\n".join([
+                # f"{p.get('name', 'Unknown')} - ${p.get('price', 0):.2f}"
+                f"{p.name} - ${p.price:.2f}"
+                for p in products
+            ])
+            await message.reply(f"Товары в категории: {category}\n{formatted_products}")
         else:
             await message.reply(f"Товары в категории {category} не найдены.")
 
-        await state.finish()
+        await state.clear()
 
     def register_handlers(self, dp: Dispatcher):
         dp.message.register(self.products_command, Command("products"))

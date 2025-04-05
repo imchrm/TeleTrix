@@ -19,10 +19,9 @@ class StartHandler:
         await message.answer(f"Bot ID: {self.bot.id}")
         await message.answer(f"Chat ID: {chat_id}")
         await message.answer(f"User ID: {bold(message.from_user.id)}")
-        await message.answer(f"User name: {bold(message.from_user.full_name)}")
-        await message.answer("")
+        await message.answer(f"User name: {bold(message.from_user.full_name)}\n")
         await message.answer(f"Привет, {message.from_user.first_name}! Я помогу тебе зарегистрироваться.")
-        await RegistrationDialog.ask_name(message)
+        await RegistrationDialog.ask_name(message=message)
 
     def register_hadlers(self, dp: Dispatcher):
         dp.message.register(self.start, CommandStart())

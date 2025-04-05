@@ -14,7 +14,7 @@ class RegistrationDialog(StatesGroup):
     registration_complete = State()
     """Registration is complete, waiting for commands."""
 
-    async def ask_name(self, message: types.Message):
+    async def ask_name(message: types.Message):
         """Запрос имени и фамилии."""
         await RegistrationDialog.waiting_for_name.set()
         await message.reply("Введите ваше имя и фамилию:")
