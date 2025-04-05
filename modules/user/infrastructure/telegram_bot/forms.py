@@ -14,17 +14,18 @@ class RegistrationDialog(StatesGroup):
     registration_complete = State()
     """Registration is complete, waiting for commands."""
 
-    async def ask_name(message: types.Message):
+    async def ask_name(self, message: types.Message, state: FSMContext):
         """Запрос имени и фамилии."""
-        await RegistrationDialog.waiting_for_name.set()
+        await state.set_state(RegistrationDialog.waiting_for_name)
         await message.reply("Введите ваше имя и фамилию:")
 
-    async def ask_phone(self, message: types.Message):
+    async def ask_phone(self, message: types.Message, state: FSMContext):
         """Запрос номера телефона."""
-        await RegistrationDialog.waiting_for_phone.set()
+        await state.set_state(RegistrationDialog.waiting_for_phone)
         await message.reply("Введите ваш номер телефона:")
 
-    async def complete(self, message: types.Message):
+    async def complete(self, message: types.Message, state: FSMContext):
         """Завершение регистрации."""
-        await RegistrationDialog.registration_complete.set()
+        await state.set_state(RegistrationDialog.registration_complete)
         await message.reply("Регистрация завершена. Теперь вы можете использовать команды бота.")
+# End-of-file (EOF)

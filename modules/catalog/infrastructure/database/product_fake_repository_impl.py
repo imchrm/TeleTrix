@@ -1,4 +1,5 @@
 import logging as log
+from typing_extensions import override
 from modules.catalog.application.dtos.category_dto import CategoryDTO
 from modules.catalog.domain.entities.category import Category
 from modules.catalog.domain.repositories.product_repository import ProductRepository
@@ -6,19 +7,22 @@ from modules.catalog.domain.entities.product import Product
 
 
 class ProductFakeRepositoryImpl(ProductRepository):
+    db = {}
     def save(self, product: Product):
         # Логика сохранения в БД
         pass
 
-    def get_all_products(self) -> list[Product]:
+    def get_all_products(self) -> list[Product] | None:
         # Логика получения списка всех товаров из БД
         log.info('Getting all products from database...')
-        pass
+        return None
 
+    @override
     def find_by_category(self, category:CategoryDTO) -> list[Product]:
         products = []
-        # TODO: Make a test mode
-        if False:
+        # TODO: Make a global test mode configuration
+        PRODUCTION = False
+        if PRODUCTION:
             for product in self.db.values():
                 if product.category == category:
                     products.append(product)
@@ -67,11 +71,19 @@ class ProductFakeRepositoryImpl(ProductRepository):
                 "price": 150,
             }
         ]
-        
+
         # Send a separate photo message for each product.
         for product in products:
             caption = f"{product['description']}\nQuantity: {product['quantity']}"
-            log.info(f"Sending product: {caption}")
+            log.info("Sending product: %s ", caption)
 
         return products
+    
+    def get_by_id(self, id):
+        # Логика получения товара по ID из БД
+        pass
+    
+    def delete(self, product: Product):
+        # Логика удаления товара из БД
+        pass
         

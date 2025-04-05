@@ -6,9 +6,9 @@ class Repository(ABC):
         pass
 
     @abstractmethod
-    def save(self, entity):
+    def save(self, product):
         pass
 
     @abstractmethod
-    def delete(self, entity):
+    def delete(self, product):
         pass

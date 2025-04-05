@@ -17,6 +17,7 @@ htmlcov/
 .vscode/
 *.sublime-project
 *.sublime-workspace
+.pylintrc
 
 # Системные файлы
 .DS_Store

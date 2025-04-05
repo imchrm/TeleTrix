@@ -1,21 +1,43 @@
--
-  name: Product 1
-  photo: https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg
-  decsription: Description of product 1
-  quantity: 10
-  price: 1000
-  category: Category 1
--
-  name: Product 2
-  photo: https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg
-  decsription: Description of product 2
-  quantity: 20
-  price: 2000
-  category: Category 2
--
-  name: Product 3
-  photo: https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg
-  decsription: Description of product 3
-  quantity: 30
-  price: 3000
-  category: Category 3
+products:
+  -
+    name: Product 1
+    photo: https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg
+    description: Description of product 1
+    quantity: 10
+    price: 1000
+    category: Category 1
+  -
+    name: Product 2
+    photo: https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg
+    description: Description of product 2
+    quantity: 20
+    price: 2000
+    category: Category 2
+  -
+    name: Product 3
+    photo: https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg
+    description: Description of product 3
+    quantity: 30
+    price: 3000
+    category: Category 3
+    -
+    name: Product 4
+    photo: https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg
+    description: Description of product 4
+    quantity: 12
+    price: 2300
+    category: Category 1
+  -
+    name: Product 5
+    photo: https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg
+    description: Description of product 5
+    quantity: 26
+    price: 5600
+    category: Category 2
+  -
+    name: Product 6
+    photo: https://images.uzum.uz/cpc7ptvfrr82f0a4na10/original.jpg
+    description: Description of product 6
+    quantity: 19
+    price: 4700
+    category: Category 3

@@ -33,12 +33,22 @@ async def setup():
     # config = get_config()
 
     config = ConfigManager.instance().config
-    log.info(f"TELEGRAM_BOT_TOKEN: {config.telegram_bot.token}")
+    log.info(f"Customer telegram bot token: {config.customer_telegram_bot.token}")
+    log.info(f"Admin telegram bot token: {config.admin_telegram_bot.token}")
+    # log.info(f"Storage type: {config.storage.storage_type}")
 
-    bot = Bot(token=config.telegram_bot.token)
+    if config.customer_telegram_bot.token is None:
+        log.error("Customer telegram bot token is not set.")
+        return
+    if config.admin_telegram_bot.token is None:
+        log.error("Admin telegram bot token is not set.")
+        return
+        
+    bot = Bot(token=config.customer_telegram_bot.token)
     dp = Dispatcher()
     # dp.storage = MemoryStorage()
 
+    # TODO: Check: Probably it can be added into forms/views
     menu_config = MenuConfig()
     commands = menu_config.start().get_commands()
     await bot.set_my_commands(commands)
@@ -56,12 +66,11 @@ def set_customer_bot_dependences(bot:Bot, disp:Dispatcher) -> None:
 
     product_service = ProductService(product_repository, product_management_service)
 
+    StartHandler(bot)\
+        .register_hadlers(disp)
 
-    start_hadler = StartHandler(bot)
-    start_hadler.register_hadlers(disp)
-
-    catalog_handler = CatalogBotHandler(product_service)
-    catalog_handler.register_handlers(disp)
+    CatalogBotHandler(product_service)\
+        .register_handlers(disp)
 
 
 if __name__ == '__main__':
